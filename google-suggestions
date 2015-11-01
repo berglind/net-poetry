@@ -1,0 +1,55 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+import json
+import urllib
+import re
+from collections import Counter
+import time
+import datetime
+import sys
+
+def showsome(searchfor, place, target_file):
+  query = urllib.urlencode({'q': searchfor + ' '})
+  url = 'http://suggestqueries.google.com/complete/search?client=firefox&%s' % query
+  search_response = urllib.urlopen(url)
+  search_results = unicode(search_response.read(), "ISO-8859-1")
+  
+  results = json.loads(search_results)
+  if len(results[1]) > 0 : 
+    if(len(results[1]) > place) : 
+      result_string = results[1][place]
+      print result_string
+      # write to file 
+      target_file.write(result_string.encode('utf-8', 'ignore'))
+      target_file.write("\n")
+    else :
+      # if we have no unique suggestions anymore we remove the space other wise added
+      # after the search string
+       showsome(searchfor[:-1], 0, target_file)
+  else : 
+    showsome(searchfor[:-1], place, target_file)
+
+
+def getAutoSuggestionForWords():
+  filename = sys.argv[1] 
+  f = file(filename).read() 
+  f = re.sub('[,."-]', '', f)  # remove the non-alpha chars , .
+  words = f.lower().split() # everything to lower case
+  word_count_origin = Counter(words)
+  word_count_updated = Counter(word_count_origin)
+
+  ts = time.time()
+  target = open(filename + '-' + datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d') + '.txt', 'w')
+ 
+  for word in words:
+    if(word_count_origin[word] > 1):
+      showsome(word, word_count_origin[word] - word_count_updated[word], target)
+      word_count_updated.subtract({word, 1})
+
+    else :
+      showsome(word, 0, target)
+ 
+  target.close()
+  file(filename).close()
+
+getAutoSuggestionForWords()
