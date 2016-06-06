@@ -12,7 +12,31 @@ This python script takes in a text file as parameter and for each word in that f
 ### Poem Example
 Original text: http://www.songlyrics.com/mark-kozelek-jimmy-lavalle/gustavo-lyrics/
 
-My poem, inspired from the output from this script:
+Sample output: 
+```
+gustavo
+i took a pill in ibiza
+wrote synonym
+a próf
+check mark
+and other stories
+i love you
+bought meaning
+an inspector calls
+old navy
+house of cards
+i am wrath
+got season 6
+a beautiful mind
+tv shows
+and gate
+a hologram for the king
+worn out meaning
+couch to 5k
+hired meaning
+```
+
+My poem, Tale of Gustavo, inspired from the output from this script:
 http://beggab00.tumblr.com/post/125461160794/the-tale-of-gustavo
 
 
